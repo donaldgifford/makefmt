@@ -73,19 +73,19 @@ Build the line-by-line parser that converts Makefile source text into an AST
 
 ### Tasks
 
-- [ ] Create `internal/parser/ast.go`:
+- [x] Create `internal/parser/ast.go`:
   - Define `NodeType` enum (Comment, SectionHeader, BannerComment, BlankLine, Assignment, Rule, Recipe, Conditional, Include, Directive, Raw)
   - Define `Node` struct with `Type`, `Line`, `Raw`, `Children`, `Fields`
   - Define `NodeFields` struct (VarName, AssignOp, VarValue, Targets, Prerequisites, OrderOnly, InlineHelp, Directive, Condition, IncludeType, Paths, Text, Inline, Prefix)
   - Add `Clone()` method on `*Node` (deep copy for immutable rule transforms)
-- [ ] Create `internal/parser/parser.go`:
+- [x] Create `internal/parser/parser.go`:
   - `Parse(src string) []*Node` — main entry point
   - Line-by-line classification with the priority order from DESIGN.md: SectionHeader → BannerComment → Comment → Recipe → Conditional → Include → Assignment → Rule → Directive → Blank → Raw
   - Continuation line joining (lines ending in `\`)
   - State machine: `inRule` flag (tab lines are recipes), `inDefine` flag (verbatim until `endef`), conditional nesting depth
   - Recipe lines become `Children` of their parent `NodeRule`
   - Conditional bodies become `Children` of their parent `NodeConditional`
-- [ ] Create `internal/parser/parser_test.go`:
+- [x] Create `internal/parser/parser_test.go`:
   - Table-driven tests for each node type classification
   - Edge cases: empty file, blank-only file, continuation-only lines, `define`/`endef` blocks, pattern rules (`%:`, `log-%:`), catch-all `%:`, deeply nested conditionals, `##@` section headers, banner comments, inline help `## Description` on rule lines, mixed assignment operators
   - Test that `Raw` field preserves original text for every node
