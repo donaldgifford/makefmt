@@ -7,6 +7,12 @@ import (
 	"github.com/donaldgifford/makefmt/internal/parser"
 )
 
+// Conditional directive keywords.
+const (
+	directiveElse  = "else"
+	directiveEndif = "endif"
+)
+
 // ConditionalIndent indents the body of ifeq/ifdef/ifndef blocks.
 type ConditionalIndent struct{}
 
@@ -36,10 +42,10 @@ func indentConditionals(nodes []*parser.Node, indent string, level int) []*parse
 			result = append(result, applyIndent(n, indent, level))
 			level++
 
-		case n.Type == parser.NodeConditional && n.Fields.Directive == "else":
+		case n.Type == parser.NodeConditional && n.Fields.Directive == directiveElse:
 			result = append(result, applyIndent(n, indent, level-1))
 
-		case n.Type == parser.NodeConditional && n.Fields.Directive == "endif":
+		case n.Type == parser.NodeConditional && n.Fields.Directive == directiveEndif:
 			level--
 			if level < 0 {
 				level = 0
