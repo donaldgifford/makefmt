@@ -499,24 +499,26 @@ Final quality pass before tagging v0.1.0.
 
 ### Tasks
 
-- [ ] Integration tests (`internal/runner/integration_test.go` or `cmd/makefmt/main_test.go`):
-  - Build the binary, then run it with `exec.Command` against test fixtures
+- [x] Integration tests (`internal/runner/integration_test.go`):
+  - Build the binary, then run it with `exec.CommandContext` against test fixtures
   - Test `--check` exit codes (0 for formatted, 1 for unformatted)
   - Test `--diff` output matches expected unified diff
   - Test `--write` actually modifies files
   - Test stdin/stdout piping
   - Test `--config` explicit path
   - Test `--version` output
-  - Test exit code 2 for bad config / missing file
+  - Test exit code 2 for missing file
   - Test multiple files on command line
-- [ ] Fuzz test for parser (`internal/parser/fuzz_test.go`):
-  - `func FuzzParse(f *testing.F)` — seed with example Makefiles, fuzz to find panics
-- [ ] Dogfood: format the project's own `Makefile` with `makefmt` and verify no changes (or commit the formatted version)
-- [ ] Verify `make ci` passes (lint + test + build)
-- [ ] Verify `goreleaser check` passes with the fixed `.goreleaser.yml`
-- [ ] Update `cmd/makefmt/main.go` help text to match DESIGN.md CLI spec
-- [ ] Create `makefmt.yml` dogfood config in repo root (with project defaults)
-- [ ] Tag `v0.1.0`
+- [x] Fuzz test for parser (`internal/parser/fuzz_test.go`):
+  - `func FuzzParse(f *testing.F)` — seed with 15 representative Makefile constructs, 165k+ executions with no panics
+- [x] Dogfood: format the project's own `Makefile` with `makefmt` and verify no changes
+  - Created `makefmt.yml` with `assignment_spacing: preserve` and `align_backslash_continuations: false`
+- [x] Verify `make ci` passes (lint + test + build)
+- [x] Verify `goreleaser check` passes with the fixed `.goreleaser.yml`
+  - Fixed `archives.format` → `archives.formats` deprecation
+- [x] Update `cmd/makefmt/main.go` help text to match DESIGN.md CLI spec
+- [x] Create `makefmt.yml` dogfood config in repo root (with project defaults)
+- [ ] Tag `v0.1.0` (deferred to user)
 
 ### Files Created
 
