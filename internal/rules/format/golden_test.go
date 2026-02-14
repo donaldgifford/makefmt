@@ -9,7 +9,6 @@ import (
 	"github.com/donaldgifford/makefmt/internal/formatter"
 	"github.com/donaldgifford/makefmt/internal/parser"
 	"github.com/donaldgifford/makefmt/internal/rules"
-	_ "github.com/donaldgifford/makefmt/internal/rules" // Register rules via init().
 	"github.com/donaldgifford/makefmt/internal/testutil"
 )
 

@@ -12,13 +12,13 @@ import (
 type FinalNewline struct{}
 
 // Name returns the config key for this rule.
-func (r *FinalNewline) Name() string {
+func (*FinalNewline) Name() string {
 	return "insert_final_newline"
 }
 
 // Format removes trailing blank lines so the writer produces exactly
 // one final newline.
-func (r *FinalNewline) Format(nodes []*parser.Node, cfg *config.FormatterConfig) []*parser.Node {
+func (*FinalNewline) Format(nodes []*parser.Node, cfg *config.FormatterConfig) []*parser.Node {
 	if !cfg.InsertFinalNewline {
 		return nodes
 	}

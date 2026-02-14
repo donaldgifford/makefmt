@@ -9,12 +9,12 @@ import (
 type BlankLines struct{}
 
 // Name returns the config key for this rule.
-func (r *BlankLines) Name() string {
+func (*BlankLines) Name() string {
 	return "max_blank_lines"
 }
 
 // Format collapses runs of blank lines to at most cfg.MaxBlankLines.
-func (r *BlankLines) Format(nodes []*parser.Node, cfg *config.FormatterConfig) []*parser.Node {
+func (*BlankLines) Format(nodes []*parser.Node, cfg *config.FormatterConfig) []*parser.Node {
 	if cfg.MaxBlankLines < 0 {
 		return nodes
 	}

@@ -87,7 +87,7 @@ fmt: ## Format code with gofmt and goimports
 	@ $(MAKE) --no-print-directory log-$@
 	@gofmt -s -w .
 	@goimports -w $(GOIMPORTS_LOCAL_ARG) .
-	@goimports -w $(GOIMPORTS_LOCAL_ARG)  cmd/ pkg/
+	@goimports -w $(GOIMPORTS_LOCAL_ARG) cmd/ internal/
 
 clean: ## Remove build artifacts
 	@ $(MAKE) --no-print-directory log-$@

@@ -12,12 +12,12 @@ import (
 type TrailingWhitespace struct{}
 
 // Name returns the config key for this rule.
-func (r *TrailingWhitespace) Name() string {
+func (*TrailingWhitespace) Name() string {
 	return "trim_trailing_whitespace"
 }
 
 // Format strips trailing whitespace from all nodes.
-func (r *TrailingWhitespace) Format(nodes []*parser.Node, cfg *config.FormatterConfig) []*parser.Node {
+func (*TrailingWhitespace) Format(nodes []*parser.Node, cfg *config.FormatterConfig) []*parser.Node {
 	if !cfg.TrimTrailingWhitespace {
 		return nodes
 	}

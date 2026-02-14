@@ -10,7 +10,7 @@ import (
 
 func TestAssignmentSpacingSpace(t *testing.T) {
 	rule := &AssignmentSpacing{}
-	cfg := &config.DefaultConfig().Formatter // AssignmentSpacing = "space"
+	cfg := &config.DefaultConfig().Formatter // default: assignment_spacing is "space"
 
 	tests := []struct {
 		name     string

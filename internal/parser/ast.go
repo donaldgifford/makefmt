@@ -5,17 +5,28 @@ package parser
 type NodeType int
 
 const (
-	NodeComment      NodeType = iota // # comment
-	NodeSectionHeader                // ##@ Section Name
-	NodeBannerComment                // Decorative separators (###..., # ===..., ## box ##)
-	NodeBlankLine                    // Empty or whitespace-only line
-	NodeAssignment                   // VAR = value, VAR := value, etc.
-	NodeRule                         // target: prerequisites
-	NodeRecipe                       // \t command (recipe line)
-	NodeConditional                  // ifeq/ifdef/ifndef/else/endif
-	NodeInclude                      // include, -include, sinclude
-	NodeDirective                    // .PHONY, .DEFAULT_GOAL, export, unexport, etc.
-	NodeRaw                          // Unparseable lines preserved verbatim (incl. define/endef)
+	// NodeComment is a line starting with #.
+	NodeComment NodeType = iota
+	// NodeSectionHeader is a "##@ Section Name" line.
+	NodeSectionHeader
+	// NodeBannerComment is a decorative separator (###..., # ===..., ## box ##).
+	NodeBannerComment
+	// NodeBlankLine is an empty or whitespace-only line.
+	NodeBlankLine
+	// NodeAssignment is a variable assignment (VAR = value, VAR := value, etc.).
+	NodeAssignment
+	// NodeRule is a target definition (target: prerequisites).
+	NodeRule
+	// NodeRecipe is a recipe line (\t command).
+	NodeRecipe
+	// NodeConditional is a conditional directive (ifeq/ifdef/ifndef/else/endif).
+	NodeConditional
+	// NodeInclude is an include directive (include, -include, sinclude).
+	NodeInclude
+	// NodeDirective is a special directive (.PHONY, .DEFAULT_GOAL, export, etc.).
+	NodeDirective
+	// NodeRaw is an unparseable line preserved verbatim (incl. define/endef).
+	NodeRaw
 )
 
 //go:generate stringer -type=NodeType
@@ -23,9 +34,9 @@ const (
 // Node represents a single parsed element in a Makefile AST.
 type Node struct {
 	Type     NodeType
-	Line     int      // 1-indexed source line number.
-	Raw      string   // Original text (for diffing and round-tripping).
-	Children []*Node  // Recipe lines under a rule, body of conditional.
+	Line     int     // 1-indexed source line number.
+	Raw      string  // Original text (for diffing and round-tripping).
+	Children []*Node // Recipe lines under a rule, body of conditional.
 	Fields   NodeFields
 }
 
@@ -47,7 +58,7 @@ type NodeFields struct {
 	Condition string // The condition expression.
 
 	// Include fields.
-	IncludeType string   // include, -include, sinclude.
+	IncludeType string // include, -include, sinclude.
 	Paths       []string
 
 	// Comment / SectionHeader / BannerComment fields.
@@ -80,8 +91,8 @@ func (n *Node) Clone() *Node {
 }
 
 // clone returns a deep copy of NodeFields.
-func (f NodeFields) clone() NodeFields {
-	c := f
+func (f *NodeFields) clone() NodeFields {
+	c := *f
 
 	c.Targets = cloneStrings(f.Targets)
 	c.Prerequisites = cloneStrings(f.Prerequisites)

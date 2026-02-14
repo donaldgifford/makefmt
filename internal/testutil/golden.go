@@ -9,7 +9,7 @@ import (
 )
 
 // Update is a flag that, when set, regenerates golden files from current output.
-// Usage: go test ./... -update
+// Usage: go test ./... -update.
 var Update = flag.Bool("update", false, "update golden files")
 
 // FormatFunc is the signature for a function that formats Makefile source.

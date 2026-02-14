@@ -268,7 +268,7 @@ loader.
 
 ### Tasks
 
-- [ ] Create `internal/config/config.go`:
+- [x] Create `internal/config/config.go`:
   - `Config` struct with `Formatter FormatterConfig` and `Lint LintConfig` fields
   - `FormatterConfig` struct with all fields from DESIGN.md schema:
     - `IndentStyle` (string, default `"tab"`)
@@ -287,14 +287,14 @@ loader.
     - `RecipePrefix` (string: `"preserve"` | `"at"` | `"at_space"`, default `"preserve"`)
   - `LintConfig` struct (placeholder for post-MVP, just the type with `Rules map[string]string` and `Exclude []string`)
   - `DefaultConfig() *Config` — returns config with all defaults
-- [ ] Create `internal/config/loader.go`:
+- [x] Create `internal/config/loader.go`:
   - `Load(configPath string) (*Config, error)`:
     - If `configPath` is non-empty, load that file
     - Otherwise, search in order: `makefmt.yml`, `makefmt.yaml`, `.makefmt.yml`, `.makefmt.yaml`
     - If no file found, return `DefaultConfig()`
     - Unmarshal YAML into `Config`, then apply defaults for any missing fields
   - `Discover() string` — returns the first config file path found, or empty string
-- [ ] Create `internal/config/config_test.go`:
+- [x] Create `internal/config/config_test.go`:
   - Test `DefaultConfig()` returns correct defaults
   - Test `Load()` with explicit path
   - Test `Load()` with discovery (create temp dir with config files)

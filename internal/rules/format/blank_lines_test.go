@@ -9,7 +9,7 @@ import (
 
 func TestBlankLines(t *testing.T) {
 	rule := &BlankLines{}
-	cfg := &config.DefaultConfig().Formatter // MaxBlankLines = 2
+	cfg := &config.DefaultConfig().Formatter // default: max_blank_lines is 2
 
 	tests := []struct {
 		name          string
@@ -29,7 +29,7 @@ func TestBlankLines(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			cfg.MaxBlankLines = tt.maxBlank
 
-			nodes := make([]*parser.Node, 0)
+			nodes := make([]*parser.Node, 0, tt.blankCount+2)
 			nodes = append(nodes, &parser.Node{Type: parser.NodeComment, Raw: "# before"})
 			for range tt.blankCount {
 				nodes = append(nodes, &parser.Node{Type: parser.NodeBlankLine, Raw: ""})

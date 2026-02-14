@@ -9,12 +9,12 @@ import (
 type AssignmentSpacing struct{}
 
 // Name returns the config key for this rule.
-func (r *AssignmentSpacing) Name() string {
+func (*AssignmentSpacing) Name() string {
 	return "assignment_spacing"
 }
 
 // Format normalizes spacing around assignment operators based on config.
-func (r *AssignmentSpacing) Format(nodes []*parser.Node, cfg *config.FormatterConfig) []*parser.Node {
+func (*AssignmentSpacing) Format(nodes []*parser.Node, cfg *config.FormatterConfig) []*parser.Node {
 	if cfg.AssignmentSpacing == "preserve" {
 		return nodes
 	}

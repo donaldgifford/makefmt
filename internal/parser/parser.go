@@ -28,23 +28,23 @@ var includeKeywords = map[string]bool{
 
 // Directive keywords that start a line (non-conditional, non-include).
 var directiveKeywords = map[string]bool{
-	".PHONY":        true,
-	".DEFAULT_GOAL": true,
-	".SUFFIXES":     true,
-	".DELETE_ON_ERROR": true,
-	".SECONDARY":    true,
-	".PRECIOUS":     true,
-	".INTERMEDIATE": true,
-	".NOTPARALLEL":  true,
-	".ONESHELL":     true,
-	".POSIX":        true,
-	".SILENT":       true,
-	".IGNORE":       true,
+	".PHONY":                true,
+	".DEFAULT_GOAL":         true,
+	".SUFFIXES":             true,
+	".DELETE_ON_ERROR":      true,
+	".SECONDARY":            true,
+	".PRECIOUS":             true,
+	".INTERMEDIATE":         true,
+	".NOTPARALLEL":          true,
+	".ONESHELL":             true,
+	".POSIX":                true,
+	".SILENT":               true,
+	".IGNORE":               true,
 	".EXPORT_ALL_VARIABLES": true,
-	"export":        true,
-	"unexport":      true,
-	"vpath":         true,
-	"override":      true,
+	"export":                true,
+	"unexport":              true,
+	"vpath":                 true,
+	"override":              true,
 }
 
 // bannerRe matches decorative comment lines:
@@ -314,23 +314,25 @@ func tryConditional(trimmed, raw string) *Node {
 
 func tryInclude(trimmed, raw string) *Node {
 	for keyword := range includeKeywords {
-		if trimmed == keyword || strings.HasPrefix(trimmed, keyword+" ") || strings.HasPrefix(trimmed, keyword+"\t") {
-			pathStr := ""
-			if len(trimmed) > len(keyword) {
-				pathStr = strings.TrimSpace(trimmed[len(keyword):])
-			}
-			var paths []string
-			if pathStr != "" {
-				paths = strings.Fields(pathStr)
-			}
-			return &Node{
-				Type: NodeInclude,
-				Raw:  raw,
-				Fields: NodeFields{
-					IncludeType: keyword,
-					Paths:       paths,
-				},
-			}
+		if trimmed != keyword && !strings.HasPrefix(trimmed, keyword+" ") && !strings.HasPrefix(trimmed, keyword+"\t") {
+			continue
+		}
+
+		pathStr := ""
+		if len(trimmed) > len(keyword) {
+			pathStr = strings.TrimSpace(trimmed[len(keyword):])
+		}
+		var paths []string
+		if pathStr != "" {
+			paths = strings.Fields(pathStr)
+		}
+		return &Node{
+			Type: NodeInclude,
+			Raw:  raw,
+			Fields: NodeFields{
+				IncludeType: keyword,
+				Paths:       paths,
+			},
 		}
 	}
 	return nil
@@ -339,48 +341,17 @@ func tryInclude(trimmed, raw string) *Node {
 func tryAssignment(trimmed, raw string) *Node {
 	for _, op := range assignOps {
 		idx := strings.Index(trimmed, op)
-		if idx < 0 {
+		if idx < 0 || isOperatorShadowed(trimmed, op, idx) {
 			continue
 		}
 
-		// For plain "=", make sure it's not part of ":=", "::=", "?=", "+=", "!=".
-		if op == "=" && idx > 0 {
-			prev := trimmed[idx-1]
-			if prev == ':' || prev == '?' || prev == '+' || prev == '!' {
-				continue
-			}
-		}
-
-		// For ":=", make sure it's not "::=".
-		if op == ":=" && idx > 0 && trimmed[idx-1] == ':' {
-			continue
-		}
-
-		// The variable name must be before the operator.
-		varName := strings.TrimSpace(trimmed[:idx])
-		if varName == "" {
-			continue
-		}
-
-		// Variable names should not contain spaces (they're likely rule targets).
-		if strings.ContainsAny(varName, " \t") {
-			// Could be "override VAR = val".
-			parts := strings.Fields(varName)
-			if len(parts) == 2 && parts[0] == "override" {
-				varName = "override " + parts[1]
-			} else {
-				continue
-			}
-		}
-
-		// Make sure the variable name looks valid (not a target:prereq pattern).
-		if strings.Contains(varName, ":") && op == "=" {
+		varName, ok := extractVarName(trimmed[:idx], op)
+		if !ok {
 			continue
 		}
 
 		varValue := ""
-		afterOp := idx + len(op)
-		if afterOp < len(trimmed) {
+		if afterOp := idx + len(op); afterOp < len(trimmed) {
 			varValue = strings.TrimSpace(trimmed[afterOp:])
 		}
 
@@ -395,6 +366,45 @@ func tryAssignment(trimmed, raw string) *Node {
 		}
 	}
 	return nil
+}
+
+// isOperatorShadowed returns true if the operator at idx is actually part
+// of a longer operator (e.g., "=" inside ":=" or ":=" inside "::=").
+func isOperatorShadowed(trimmed, op string, idx int) bool {
+	if idx == 0 {
+		return false
+	}
+	prev := trimmed[idx-1]
+	if op == "=" && (prev == ':' || prev == '?' || prev == '+' || prev == '!') {
+		return true
+	}
+	if op == ":=" && prev == ':' {
+		return true
+	}
+	return false
+}
+
+// extractVarName validates and returns the variable name from the text
+// before the assignment operator. Returns false if the text does not
+// contain a valid variable name.
+func extractVarName(before, op string) (string, bool) {
+	varName := strings.TrimSpace(before)
+	if varName == "" {
+		return "", false
+	}
+
+	if strings.ContainsAny(varName, " \t") {
+		parts := strings.Fields(varName)
+		if len(parts) != 2 || parts[0] != "override" {
+			return "", false
+		}
+		varName = "override " + parts[1]
+	}
+
+	if strings.Contains(varName, ":") && op == "=" {
+		return "", false
+	}
+	return varName, true
 }
 
 func tryRule(trimmed, raw string) *Node {
@@ -423,15 +433,15 @@ func tryRule(trimmed, raw string) *Node {
 	var inlineHelp string
 
 	// Check for inline help comment: ## at end of line.
-	if helpIdx := strings.Index(rest, "##"); helpIdx >= 0 {
-		inlineHelp = strings.TrimSpace(rest[helpIdx+2:])
-		rest = strings.TrimSpace(rest[:helpIdx])
+	if before, after, found := strings.Cut(rest, "##"); found {
+		inlineHelp = strings.TrimSpace(after)
+		rest = strings.TrimSpace(before)
 	}
 
 	// Split prerequisites at |.
-	if pipeIdx := strings.Index(rest, "|"); pipeIdx >= 0 {
-		prereqStr := strings.TrimSpace(rest[:pipeIdx])
-		orderStr := strings.TrimSpace(rest[pipeIdx+1:])
+	if before, after, found := strings.Cut(rest, "|"); found {
+		prereqStr := strings.TrimSpace(before)
+		orderStr := strings.TrimSpace(after)
 		if prereqStr != "" {
 			prerequisites = strings.Fields(prereqStr)
 		}

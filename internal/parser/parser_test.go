@@ -122,7 +122,12 @@ func TestClassifyAssignment(t *testing.T) {
 		{"plus equals", "VAR += value", "VAR", "+=", "value"},
 		{"shell equals", "VAR != value", "VAR", "!=", "value"},
 		{"no space", "VAR:=value", "VAR", ":=", "value"},
-		{"complex value", "GO_PACKAGE := github.com/$(PROJECT_OWNER)/$(PROJECT_NAME)", "GO_PACKAGE", ":=", "github.com/$(PROJECT_OWNER)/$(PROJECT_NAME)"},
+		{
+			"complex value",
+			"GO_PACKAGE := github.com/$(PROJECT_OWNER)/$(PROJECT_NAME)",
+			"GO_PACKAGE", ":=",
+			"github.com/$(PROJECT_OWNER)/$(PROJECT_NAME)",
+		},
 		{"empty value", "VAR =", "VAR", "=", ""},
 	}
 

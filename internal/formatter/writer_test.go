@@ -223,20 +223,20 @@ log-%:
 
 	if output != input {
 		t.Errorf("full Makefile round-trip failed.\nInput length: %d\nOutput length: %d", len(input), len(output))
-		// Find first difference.
-		for i := 0; i < len(input) && i < len(output); i++ {
-			if input[i] != output[i] {
-				start := i - 20
-				if start < 0 {
-					start = 0
-				}
-				end := i + 20
-				if end > len(input) {
-					end = len(input)
-				}
-				t.Errorf("first difference at byte %d:\ninput:  %q\noutput: %q", i, input[start:end], output[start:min(end, len(output))])
-				break
-			}
+		logFirstDifference(t, input, output)
+	}
+}
+
+func logFirstDifference(t *testing.T, input, output string) {
+	t.Helper()
+	for i := range min(len(input), len(output)) {
+		if input[i] == output[i] {
+			continue
 		}
+		start := max(i-20, 0)
+		end := min(i+20, len(input))
+		t.Errorf("first difference at byte %d:\ninput:  %q\noutput: %q",
+			i, input[start:end], output[start:min(end, len(output))])
+		return
 	}
 }
