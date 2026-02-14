@@ -118,7 +118,7 @@ already-formatted input.
 
 ### Tasks
 
-- [ ] Create `internal/formatter/writer.go`:
+- [x] Create `internal/formatter/writer.go`:
   - `Write(nodes []*Node) string` — walks the node list and emits text
   - Each `NodeType` has a serialization path:
     - `NodeComment`: emit `Prefix + " " + Text` (or just `Prefix` if empty text)
@@ -133,7 +133,7 @@ already-formatted input.
     - `NodeDirective`: emit raw
     - `NodeRaw`: emit raw (verbatim)
   - Ensure final output respects node ordering faithfully
-- [ ] Create `internal/formatter/writer_test.go`:
+- [x] Create `internal/formatter/writer_test.go`:
   - Round-trip tests: `Parse(src)` → `Write()` produces the original text for clean input
   - Test each node type serialization individually
 
