@@ -408,14 +408,14 @@ the Phase 3 rules and benefit from having the full infrastructure in place.
 
 ### Tasks
 
-- [ ] Implement `internal/rules/format/backslash_align.go`:
+- [x] Implement `internal/rules/format/backslash_align.go`:
   - Rule: `align_backslash_continuations`
   - Find continuation blocks (sequences of lines ending in `\`)
   - Align all `\` characters to a consistent column:
     - If `backslash_column > 0`: use that column
     - If `backslash_column == 0` (auto): use the longest line in the block + 1 space
   - Preserve content before the `\`; only adjust trailing whitespace before `\`
-- [ ] Implement `internal/rules/format/comment_spacing.go`:
+- [x] Implement `internal/rules/format/comment_spacing.go`:
   - Rule: `space_after_comment`
   - For `NodeComment` nodes with prefix `#` (single hash):
     - Ensure a space after `#` (e.g., `#comment` → `# comment`)
@@ -425,30 +425,30 @@ the Phase 3 rules and benefit from having the full infrastructure in place.
     - `NodeBannerComment` nodes
     - Shebangs (`#!`)
     - Empty comments (`#` alone)
-- [ ] Implement `internal/rules/format/conditional_indent.go`:
+- [x] Implement `internal/rules/format/conditional_indent.go`:
   - Rule: `indent_conditionals`
   - For `NodeConditional` nodes: indent the body (Children) by `cfg.ConditionalIndent` spaces
   - `ifeq`/`ifdef`/`ifndef` open an indent level
   - `else` aligns with the opening directive (same indent as `ifeq`)
   - `endif` aligns with the opening directive
   - Handle nested conditionals (multiply indent level)
-- [ ] Implement `internal/rules/format/banner_preserve.go`:
+- [x] Implement `internal/rules/format/banner_preserve.go`:
   - Rule: `preserve_banner_comments`
   - This is a guard rule: ensure `NodeBannerComment` and `NodeSectionHeader` nodes pass through without modification from other rules
   - If prior rules inadvertently modified these nodes, restore from `Raw` field
   - Should run last in the rule chain
-- [ ] Create tests for each rule:
+- [x] Create tests for each rule:
   - `internal/rules/format/backslash_align_test.go`
   - `internal/rules/format/comment_spacing_test.go`
   - `internal/rules/format/conditional_indent_test.go`
   - `internal/rules/format/banner_preserve_test.go`
-- [ ] Create golden file tests:
+- [x] Create golden file tests:
   - `testdata/backslash_align/input.mk` + `expected.mk`
   - `testdata/comment_spacing/input.mk` + `expected.mk`
   - `testdata/conditional_indent/input.mk` + `expected.mk`
   - `testdata/banner_preserve/input.mk` + `expected.mk`
-- [ ] Register all four rules in `internal/rules/registry.go` in the correct order
-- [ ] Create `testdata/full_format/input.mk` + `expected.mk`:
+- [x] Register all four rules in `internal/rules/registry.go` in the correct order
+- [x] Create `testdata/full_format/input.mk` + `expected.mk`:
   - The comprehensive golden file test from DESIGN.md (lines 626-716)
   - Exercises all 8 rules together
 

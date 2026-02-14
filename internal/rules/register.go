@@ -12,9 +12,9 @@ func init() {
 	RegisterFormatRule(&format.BlankLines{})
 	RegisterFormatRule(&format.AssignmentSpacing{})
 
-	// Phase 6 rules (5-8) will be added here in order:
-	// RegisterFormatRule(&format.BackslashAlign{})
-	// RegisterFormatRule(&format.CommentSpacing{})
-	// RegisterFormatRule(&format.ConditionalIndent{})
-	// RegisterFormatRule(&format.BannerPreserve{})
+	// Phase 6 rules (5-8):
+	RegisterFormatRule(&format.BackslashAlign{})
+	RegisterFormatRule(&format.CommentSpacing{})
+	RegisterFormatRule(&format.ConditionalIndent{})
+	RegisterFormatRule(&format.BannerPreserve{})
 }
