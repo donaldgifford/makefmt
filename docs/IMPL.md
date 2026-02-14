@@ -332,21 +332,21 @@ parse → format → output, and unified diff generation.
 
 ### Tasks
 
-- [ ] Create `pkg/diff/diff.go`:
+- [x] Create `pkg/diff/diff.go`:
   - Hand-rolled Myers diff implementation (no external dependency)
   - `Unified(filename, old, new string) string` — generates a unified diff
   - Returns empty string if old == new
   - Standard unified diff format with `---`/`+++` headers and `@@` hunks
   - Context lines (default 3) around each change
-- [ ] Create `pkg/diff/diff_test.go`:
+- [x] Create `pkg/diff/diff_test.go`:
   - Test identical inputs → empty string
   - Test additions, deletions, modifications
   - Test output matches standard unified diff format
   - Test large files (performance sanity check)
   - Test empty inputs (both sides, one side)
-- [ ] Create `internal/runner/runner.go`:
+- [x] Create `internal/runner/runner.go`:
   - `Options` struct: `Files []string`, `Check bool`, `Diff bool`, `Write bool`, `Stdin bool`, `ConfigPath string`, `Quiet bool`, `Verbose bool`
-  - `Run(opts Options) int` — main orchestration:
+  - `Run(opts *Options) int` — main orchestration:
     1. Load config via `config.Load(opts.ConfigPath)`
     2. For each file (or stdin):
        - Read source
@@ -358,12 +358,12 @@ parse → format → output, and unified diff generation.
   - Handle stdin when no files given
   - Handle `--write` as default when files are given
   - Error handling: I/O errors → exit code 2
-- [ ] Create `internal/runner/runner_test.go`:
+- [x] Create `internal/runner/runner_test.go`:
   - Test each mode (format to stdout, check, diff, write)
   - Test stdin handling
   - Test exit codes
   - Test error handling (missing file → exit 2)
-- [ ] Implement `cmd/makefmt/main.go`:
+- [x] Implement `cmd/makefmt/main.go`:
   - Use stdlib `flag` package (no cobra dependency)
   - Parse flags and translate to `runner.Options`
   - Flags: `-check`, `-diff`, `-w` (write), `-config`, `-q` (quiet), `-v` (verbose), `-version`
