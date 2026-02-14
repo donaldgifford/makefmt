@@ -161,38 +161,38 @@ registered order, plus the four simplest formatting rules.
 
 ### Tasks
 
-- [ ] Create `internal/formatter/rule.go`:
+- [x] Create `internal/formatter/rule.go`:
   - Define `FormatRule` interface: `Name() string`, `Format(nodes []*Node, cfg *config.FormatterConfig) []*Node`
-- [ ] Create `internal/formatter/engine.go`:
+- [x] Create `internal/formatter/engine.go`:
   - `Run(nodes []*Node, cfg *config.FormatterConfig, rules []FormatRule) []*Node`
   - Applies each rule in order, passing the output of one as input to the next
-- [ ] Create `internal/rules/registry.go`:
+- [x] Create `internal/rules/registry.go`:
   - `var formatRules []FormatRule`
   - `RegisterFormatRule(r FormatRule)`
   - `FormatRules() []FormatRule` — returns registered rules in order
   - `init()` function registers all rules in execution order
-- [ ] Implement `internal/rules/format/trailing_whitespace.go`:
+- [x] Implement `internal/rules/format/trailing_whitespace.go`:
   - Rule: `trim_trailing_whitespace`
   - Strip trailing spaces/tabs from every node's text content
   - Operates on `Raw` field and all text-bearing `NodeFields`
-- [ ] Implement `internal/rules/format/final_newline.go`:
+- [x] Implement `internal/rules/format/final_newline.go`:
   - Rule: `insert_final_newline`
   - Ensure the AST ends with exactly one blank line (or the writer appends `\n`)
-- [ ] Implement `internal/rules/format/blank_lines.go`:
+- [x] Implement `internal/rules/format/blank_lines.go`:
   - Rule: `max_blank_lines`
   - Collapse consecutive `NodeBlankLine` runs to at most `cfg.MaxBlankLines` (default: 2)
-- [ ] Implement `internal/rules/format/assignment_spacing.go`:
+- [x] Implement `internal/rules/format/assignment_spacing.go`:
   - Rule: `assignment_spacing`
   - `space` mode: normalize `NodeAssignment` fields so writer emits `VAR = val` (single space around operator)
   - `no_space` mode: `VAR=val`
   - `preserve` mode: no-op
   - Handle all operator types: `=`, `:=`, `::=`, `?=`, `+=`, `!=`
-- [ ] Create tests for each rule:
+- [x] Create tests for each rule:
   - `internal/rules/format/trailing_whitespace_test.go`
   - `internal/rules/format/final_newline_test.go`
   - `internal/rules/format/blank_lines_test.go`
   - `internal/rules/format/assignment_spacing_test.go`
-- [ ] Create golden file test harness in `internal/testutil/golden.go`:
+- [x] Create golden file test harness in `internal/testutil/golden.go`:
   - `var Update = flag.Bool("update", false, "update golden files")`
   - `RunGolden(t, dir, cfg, formatFunc)` — single golden test:
     1. Read `input.mk` from dir
@@ -202,7 +202,7 @@ registered order, plus the four simplest formatting rules.
   - `RunGoldenDir(t, testdataDir, cfg, formatFunc)` — walk all subdirectories, call `RunGolden` for each as a `t.Run` subtest
   - Usage: `go test ./... -update` regenerates all `expected.mk` files from current formatter output
   - This follows the established pattern from gofumpt, yamlfmt, and shfmt (see DESIGN.md Testing Strategy)
-- [ ] Create initial golden file pairs:
+- [x] Create initial golden file pairs:
   - `testdata/trailing_whitespace/input.mk` + `expected.mk`
   - `testdata/blank_lines/input.mk` + `expected.mk`
   - `testdata/assignment_spacing/input.mk` + `expected.mk`
