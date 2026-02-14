@@ -74,7 +74,7 @@ linters:
 
     # Style & Conventions
     - godot  # Comments should end with periods
-    - goheader  # License header
+    # - goheader  # License header (disabled: no header convention established)
 
   settings:
     # Error handling
@@ -271,7 +271,7 @@ formatters:
       simplify: true
     goimports:
       local-prefixes:
-        - github.com/donaldgifford/keycloak-cli
+        - github.com/donaldgifford/makefmt
     golines:
       max-len: 150
     gci:
