@@ -1,0 +1,3 @@
+formatter:
+  assignment_spacing: preserve
+  align_backslash_continuations: false

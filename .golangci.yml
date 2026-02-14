@@ -74,7 +74,7 @@ linters:
 
     # Style & Conventions
     - godot  # Comments should end with periods
-    - goheader  # License header
+    # - goheader  # License header (disabled: no header convention established)
 
   settings:
     # Error handling
@@ -83,9 +83,8 @@ linters:
       check-blank: true
       exclude-functions:
         - (io.Closer).Close  # Common pattern to defer close
-        - (*github.com/fatih/color.Color).Printf  # CLI color output to stdout.
-        - (*github.com/fatih/color.Color).Println  # CLI color output to stdout.
-        - (*github.com/spf13/cobra.Command).MarkFlagRequired  # Only fails if flag name is wrong.
+        - fmt.Fprint  # Terminal/pipe output where errors are not actionable.
+        - fmt.Fprintf  # Terminal/pipe output where errors are not actionable.
 
     errorlint:
       errorf: true
@@ -271,7 +270,7 @@ formatters:
       simplify: true
     goimports:
       local-prefixes:
-        - github.com/donaldgifford/keycloak-cli
+        - github.com/donaldgifford/makefmt
     golines:
       max-len: 150
     gci:
