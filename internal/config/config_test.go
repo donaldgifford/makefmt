@@ -21,7 +21,7 @@ func TestDefaultConfig(t *testing.T) {
 		{"MaxBlankLines", f.MaxBlankLines, 2},
 		{"InsertFinalNewline", f.InsertFinalNewline, true},
 		{"TrimTrailingWhitespace", f.TrimTrailingWhitespace, true},
-		{"AlignAssignments", f.AlignAssignments, false},
+		{"AlignAssignments", f.AlignAssignments, true},
 		{"AssignmentSpacing", f.AssignmentSpacing, "space"},
 		{"SortPrerequisites", f.SortPrerequisites, false},
 		{"AlignBackslashContinuations", f.AlignBackslashContinuations, true},
