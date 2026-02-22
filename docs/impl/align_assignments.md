@@ -204,7 +204,7 @@ Update user-facing documentation to reflect the new rule and default.
 
 ### Tasks
 
-- [ ] **4.1** Update `docs/RULES.md`
+- [x] **4.1** Update `docs/RULES.md`
   - Add a new section between `assignment_spacing` (rule 4) and
     `align_backslash_continuations` (currently rule 5) — renumber subsequent
     rules (5 becomes 6, 6 becomes 7, etc.)
@@ -221,7 +221,7 @@ Update user-facing documentation to reflect the new rule and default.
     `align_assignments` between `assignment_spacing` and
     `align_backslash_continuations`
 
-- [ ] **4.2** Update `docs/USAGE.md`
+- [x] **4.2** Update `docs/USAGE.md`
   - Change the config reference at line 92 from
     `align_assignments: false` and `# Default: false (reserved for future use)`
     to `align_assignments: true` with updated comment
@@ -229,7 +229,7 @@ Update user-facing documentation to reflect the new rule and default.
     section (after `trim_trailing_whitespace`, before `assignment_spacing`)
     explaining the behavior
 
-- [ ] **4.3** Update `README.md` if it references the config defaults
+- [x] **4.3** Update `README.md` if it references the config defaults
 
 ### Success Criteria
 
