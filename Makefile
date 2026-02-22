@@ -9,17 +9,17 @@ PROJECT_URL   := https://github.com/$(PROJECT_OWNER)/$(PROJECT_NAME)
 
 ## Go Variables
 
-GO          ?= go
-GO_PACKAGE  := github.com/$(PROJECT_OWNER)/$(PROJECT_NAME)
-GOOS        ?= $(shell $(GO) env GOOS)
-GOARCH      ?= $(shell $(GO) env GOARCH)
+GO         ?= go
+GO_PACKAGE := github.com/$(PROJECT_OWNER)/$(PROJECT_NAME)
+GOOS       ?= $(shell $(GO) env GOOS)
+GOARCH     ?= $(shell $(GO) env GOARCH)
 
 GOIMPORTS_LOCAL_ARG := -local github.com/donaldgifford
 
 ## Build Directories
 
-BUILD_DIR      := build
-BIN_DIR        := $(BUILD_DIR)/bin
+BUILD_DIR := build
+BIN_DIR   := $(BUILD_DIR)/bin
 
 ## Version Information
 

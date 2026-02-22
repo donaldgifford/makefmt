@@ -246,11 +246,11 @@ End-to-end verification that everything works together.
 
 ### Tasks
 
-- [ ] **5.1** Run `make ci` (lint + test + build)
-- [ ] **5.2** Run `makefmt` on the project's own `Makefile` and verify
+- [x] **5.1** Run `make ci` (lint + test + build)
+- [x] **5.2** Run `makefmt` on the project's own `Makefile` and verify
   the output preserves the existing aligned style (since the Makefile is
   already aligned, the formatter should be idempotent)
-- [ ] **5.3** Run `makefmt --diff Makefile` and verify zero diff
+- [x] **5.3** Run `makefmt --diff Makefile` and verify zero diff
   - The project's `makefmt.yml` sets `assignment_spacing: preserve` and
     `align_assignments: true`. Since `preserve` mode in `AssignmentSpacing`
     returns nodes unmodified (Raw intact), `AlignAssignments` will clone,
@@ -259,10 +259,10 @@ End-to-end verification that everything works together.
     uses space style with correct alignment, the output should match.
   - If there IS a diff, investigate whether `preserve` mode needs special
     handling — see Resolved Question 2 below for the investigation plan.
-- [ ] **5.4** Run `makefmt --check Makefile` and verify exit code 0
-- [ ] **5.5** Test with `align_assignments: false` in config to verify
+- [x] **5.4** Run `makefmt --check Makefile` and verify exit code 0
+- [x] **5.5** Test with `align_assignments: false` in config to verify
   disabling works
-- [ ] **5.6** Test with `assignment_spacing: no_space` + `align_assignments: true`
+- [x] **5.6** Test with `assignment_spacing: no_space` + `align_assignments: true`
   to verify the no_space alignment path works end-to-end
 
 ### Success Criteria
@@ -307,7 +307,7 @@ based on VarName length.
 
 ---
 
-## Outstanding Investigation: `preserve` + `align_assignments` interaction
+## Resolved: `preserve` + `align_assignments` interaction
 
 The project's `makefmt.yml` uses `assignment_spacing: preserve`. When
 combined with `align_assignments: true`, the following happens:
@@ -342,4 +342,9 @@ but respects the `preserve` intent.
 conflict and document that users should set an explicit `assignment_spacing`
 when enabling alignment.
 
-This will be resolved during Phase 5 based on testing results.
+**Resolution (Phase 5):** Option (a) — the behavior is accepted and documented.
+`align_assignments: true` with `assignment_spacing: preserve` uses space style
+for reconstruction (writer default). The Makefile had over-padded groups which
+were normalized down when `makefmt -w Makefile` was applied. After that,
+`makefmt --check Makefile` exits 0 (idempotent). The `preserve` + alignment
+interaction is documented in `docs/USAGE.md` under `#### align_assignments`.
