@@ -1,3 +1,4 @@
 formatter:
   assignment_spacing: preserve
+  align_assignments: true
   align_backslash_continuations: false

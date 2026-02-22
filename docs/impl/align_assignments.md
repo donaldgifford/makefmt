@@ -128,13 +128,13 @@ default enabled, and changing the default requires updating existing goldens.
 
 ### Tasks
 
-- [ ] **3.1** Change default in `internal/config/config.go`
+- [x] **3.1** Change default in `internal/config/config.go`
   - Set `AlignAssignments: true` in `DefaultConfig()` (line 46)
 
-- [ ] **3.2** Update `internal/config/config_test.go`
+- [x] **3.2** Update `internal/config/config_test.go`
   - Change `TestDefaultConfig` expectation at line 24 from `false` to `true`
 
-- [ ] **3.3** Create `testdata/align_assignments/input.mk` with:
+- [x] **3.3** Create `testdata/align_assignments/input.mk` with:
   - A group of 4 assignments with varying name lengths (e.g.,
     `PROJECT_NAME`, `PROJECT_OWNER`, `DESCRIPTION`, `PROJECT_URL`)
   - A blank line, then a second group with mixed operators (`:=`, `?=`)
@@ -144,23 +144,23 @@ default enabled, and changing the default requires updating existing goldens.
     `ABC`)
   - An over-padded group that should be normalized down
 
-- [ ] **3.4** Create `testdata/align_assignments/expected.mk` with the
+- [x] **3.4** Create `testdata/align_assignments/expected.mk` with the
   correctly aligned output
 
-- [ ] **3.5** Update golden file: `testdata/assignment_spacing/expected.mk`
+- [x] **3.5** Update golden file: `testdata/assignment_spacing/expected.mk`
   - Current file has 6 consecutive assignments (`PROJECT_NAME`,
     `PROJECT_OWNER`, `DESCRIPTION`, `GO`, `GO_PACKAGE`, `VERSION`) that
     will now be aligned
   - Run `go test ./internal/rules/format/ -run TestGoldenFiles/assignment_spacing -update`
     to regenerate, then manually verify the output is correct
 
-- [ ] **3.6** Update golden file: `testdata/full_format/expected.mk`
+- [x] **3.6** Update golden file: `testdata/full_format/expected.mk`
   - Has two groups of consecutive assignments separated by section headers:
     - Group 1 (lines 3-5): `PROJECT_NAME`, `PROJECT_OWNER`, `DESCRIPTION`
     - Group 2 (lines 9-10): `GO`, `GO_PACKAGE`
   - Run with `-update` and verify
 
-- [ ] **3.7** Verify remaining golden files are unaffected
+- [x] **3.7** Verify remaining golden files are unaffected
   - `testdata/conditional_indent/` — assignments are separated by
     `else` (NodeConditional), so they form groups of 1 each. **No change
     expected.**
@@ -173,11 +173,11 @@ default enabled, and changing the default requires updating existing goldens.
   - `testdata/comment_spacing/` — no assignments. **No change expected.**
   - Run `make test` to confirm all golden tests pass
 
-- [ ] **3.8** Verify integration tests are unaffected
+- [x] **3.8** Verify integration tests are unaffected
   - All integration tests use single-assignment inputs (groups of 1),
     so alignment produces no changes. Run `make test` to confirm.
 
-- [ ] **3.9** Update `makefmt.yml` — add `align_assignments: true` explicitly
+- [x] **3.9** Update `makefmt.yml` — add `align_assignments: true` explicitly
   ```yaml
   formatter:
     assignment_spacing: preserve
