@@ -63,7 +63,7 @@ and edge cases.
 
 ### Tasks
 
-- [ ] **2.1** Create `internal/rules/format/align_assignments_test.go` with
+- [x] **2.1** Create `internal/rules/format/align_assignments_test.go` with
   the following test cases:
 
   **Basic behavior:**
@@ -104,7 +104,7 @@ and edge cases.
     participates in alignment correctly; VarName length determines column,
     VarValue content is irrelevant to alignment
 
-- [ ] **2.2** Verify writer output for each test case
+- [x] **2.2** Verify writer output for each test case
   - Each test should call `formatter.Write()` on the result and verify the
     serialized text matches expectations (same pattern as
     `assignment_spacing_test.go`)
