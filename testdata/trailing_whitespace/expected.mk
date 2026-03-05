@@ -1,5 +1,5 @@
 # Comment with trailing spaces
-VAR := value
+VAR       := value
 BUILD_DIR := build
 
 .PHONY: build

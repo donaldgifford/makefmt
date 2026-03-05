@@ -40,7 +40,7 @@ func DefaultConfig() *Config {
 			MaxBlankLines:               2,
 			InsertFinalNewline:          true,
 			TrimTrailingWhitespace:      true,
-			AlignAssignments:            false,
+			AlignAssignments:            true,
 			AssignmentSpacing:           "space",
 			SortPrerequisites:           false,
 			AlignBackslashContinuations: true,

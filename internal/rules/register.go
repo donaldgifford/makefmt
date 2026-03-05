@@ -11,6 +11,7 @@ func init() {
 	RegisterFormatRule(&format.FinalNewline{})
 	RegisterFormatRule(&format.BlankLines{})
 	RegisterFormatRule(&format.AssignmentSpacing{})
+	RegisterFormatRule(&format.AlignAssignments{})
 
 	// Phase 6 rules (5-8):
 	RegisterFormatRule(&format.BackslashAlign{})

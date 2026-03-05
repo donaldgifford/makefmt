@@ -1,12 +1,12 @@
 # Project Variables
 
-PROJECT_NAME := my-project
+PROJECT_NAME  := my-project
 PROJECT_OWNER := donaldgifford
-DESCRIPTION := A project
+DESCRIPTION   := A project
 
 ## Go Variables
 
-GO ?= go
+GO         ?= go
 GO_PACKAGE := github.com/$(PROJECT_OWNER)/$(PROJECT_NAME)
 
 ###############

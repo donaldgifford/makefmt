@@ -88,8 +88,10 @@ formatter:
   trim_trailing_whitespace: true
 
   # Align assignment operators in consecutive assignment blocks.
-  # Default: false (reserved for future use)
-  align_assignments: false
+  # Groups are broken by blank lines, comments, or non-assignment lines.
+  # Over-padded assignments are normalized down. Output is idempotent.
+  # Default: true
+  align_assignments: true
 
   # Spacing around assignment operators (:=, ?=, +=, =).
   # Options: "space" (VAR := val), "no_space" (VAR:=val), "preserve"
@@ -171,6 +173,21 @@ Controls whitespace around assignment operators (`:=`, `?=`, `+=`, `=`).
 - `"space"` — `VAR := value` (one space on each side)
 - `"no_space"` — `VAR:=value` (no spaces)
 - `"preserve"` — leave existing spacing unchanged
+
+#### `align_assignments`
+
+When `true`, column-aligns assignment operators within groups of consecutive
+assignment lines. Each group is aligned to the longest variable name in that
+group. Groups are delimited by blank lines, comments, or any non-assignment
+line. A single assignment line is never padded.
+
+Existing over-padding (wider than the group minimum) is normalized down,
+ensuring idempotent output regardless of the input's prior alignment state.
+
+Note: when `assignment_spacing` is `"preserve"` and `align_assignments` is
+`true`, the alignment rule clears the preserved raw text and reconstructs
+with spaces. Set `assignment_spacing: no_space` explicitly if you want
+compact alignment (`VAR   :=val`).
 
 #### `align_backslash_continuations`
 

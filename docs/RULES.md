@@ -164,7 +164,46 @@ GO_PACKAGE := github.com/foo/bar
 VERSION += extra
 ```
 
-### 5. `align_backslash_continuations`
+### 5. `align_assignments`
+
+Column-aligns assignment operators within groups of consecutive assignment lines.
+
+| | |
+|---|---|
+| **Config key** | `align_assignments` |
+| **Type** | `bool` |
+| **Default** | `true` |
+
+**Grouping**: Consecutive assignment lines form a group. A group is broken by a
+blank line, a comment, or any non-assignment line (rule, conditional, etc.).
+Each group is aligned independently. A single assignment is a group of one and
+receives no padding.
+
+**Operator alignment**: All operator starts align to the column after the longest
+variable name in the group. Mixed operators (`:=`, `?=`, `+=`) in the same group
+all start at the same column.
+
+**Over-padding**: If a group has been padded wider than necessary (e.g. by prior
+manual editing or a previous run with different variables), the rule normalizes it
+down to the minimum required column. Output is always idempotent.
+
+**Before:**
+
+```makefile
+PROJECT_NAME := makefmt
+PROJECT_OWNER := donaldgifford
+DESCRIPTION := GNU Make formatter
+```
+
+**After:**
+
+```makefile
+PROJECT_NAME  := makefmt
+PROJECT_OWNER := donaldgifford
+DESCRIPTION   := GNU Make formatter
+```
+
+### 6. `align_backslash_continuations`
 
 Aligns trailing backslashes in continuation blocks to a consistent column.
 
@@ -211,7 +250,7 @@ release:
 
 (backslashes aligned to column 79)
 
-### 6. `space_after_comment`
+### 7. `space_after_comment`
 
 Ensures a space after `#` in single-hash comments.
 
@@ -256,7 +295,7 @@ Ensures a space after `#` in single-hash comments.
 Note: `##`, `##@`, `#`, and `#!` lines are unchanged. Only single-hash
 comments with content have spacing normalized.
 
-### 7. `indent_conditionals`
+### 8. `indent_conditionals`
 
 Indents the body of conditional blocks (`ifeq`, `ifneq`, `ifdef`, `ifndef`).
 
@@ -298,7 +337,7 @@ else
 endif
 ```
 
-### 8. `preserve_banner_comments`
+### 9. `preserve_banner_comments`
 
 Ensures banner comments and section headers pass through unmodified.
 
@@ -336,10 +375,11 @@ Rules are applied in the following fixed order:
 2. `insert_final_newline` — normalize file ending
 3. `max_blank_lines` — collapse excessive blank lines
 4. `assignment_spacing` — normalize assignment operators
-5. `align_backslash_continuations` — align continuation backslashes
-6. `space_after_comment` — normalize comment spacing
-7. `indent_conditionals` — indent conditional bodies
-8. `preserve_banner_comments` — guard rule (runs last)
+5. `align_assignments` — column-align operators within groups
+6. `align_backslash_continuations` — align continuation backslashes
+7. `space_after_comment` — normalize comment spacing
+8. `indent_conditionals` — indent conditional bodies
+9. `preserve_banner_comments` — guard rule (runs last)
 
 This order matters. For example, trailing whitespace is trimmed before
 backslash alignment, so the aligner works with clean lines. Assignment
